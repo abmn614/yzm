@@ -1,0 +1,333 @@
+一、变量类型
+int
+float
+string
+bool
+array
+object
+resource
+null
+
+二、变量类型判断
+is_int()
+...
+
+三、类型自动转换-标量才有意义
+int->string:
+$num."abc"
+
+string->int
+$str+1
+
+*->bool
+以下转bool为假，其余都为真：
+""
+"0"
+0
+false
+array()
+null
+没有定义
+
+四、类型强制转换-标量才有意义
+(int)$str
+(float)$int
+(string)$int
+(bool)$num
+
+五、定义常量
+1、自定义常量
+define("HOST","localhost");
+
+2、PHP预定义常量
+PHP_OS  php运行系统环境
+PHP_VERSION  php版本
+__LINE__
+__FILE__  文件路径***常用***
+__FUNCTION__  写在那个函数里就显示哪个函数的函数名
+M_PI
+
+六、语言结构
+if...elseif...else
+for
+while
+do...while
+switch...case...break
+echo
+print
+array
+list
+foreach
+isset
+unset
+include
+require
+exit;  终止脚本，相当于把后面的代码注释了
+die;  也可以中止脚本，不过可以输出一段话后再终止。
+die("code...");
+
+七、函数
+1、语言结构（也是函数的一种）
+
+2、自定义函数
+    function fun(){
+        echo "";
+    }
+
+3、函数返回值
+    function $sum($a,$b){
+        //echo $a+$b;
+        return $a+$b;
+    }
+    echo "1+2=".$sum(1,2);
+    //如果直接echo，输出结果是“31+2”
+    //如果有返回值，输出结果是“1+2=3”
+    
+4、参数
+    function fun($num){
+        
+    }
+
+5、默认参数
+    function fun($num=10){
+    
+    }
+
+6、引用参数
+    //加&号，引用内存地址传值
+    $num = 10;
+    function fun(&$i){
+        $i++;
+    }
+    fun();
+    echo $num;
+    //输出11
+
+7、可变个数的参数
+    function fun(){
+        
+    }
+    echo fun(1,2,3,4);
+
+8、回调函数：是参数的一种
+    一个函数的参数是另一个函数的名称，这个参数就叫回调函数。
+    function sum($i,$j){
+        return $i+$j;
+    }
+
+    function fun($a,$b,$c){
+        return $c($a,$b);
+    }
+    echo fun(1,2,"sum")
+
+9、变量作用域
+    全局变量
+    局部变量
+    global关键字修饰后，可以把局部变量变成全局变量，要改一起改。
+
+10、变量函数：变量的值是函数名
+    function sum($i,$j){
+        return $i+$j;
+    }
+    $a="sum";
+    echo $a(1,2);
+
+11、静态变量：static
+    function fun(){
+        static $sum;
+        $sum++;
+        echo $sum."<br>";
+    }
+    fun();
+    fun();
+    fun();
+    fun();
+    fun();
+    多次调用同一个函数的时候，静态变量可以一直跟踪下去。
+
+12、递归函数
+
+13、文件包含
+    include("config.php");  //出错继续执行下面的代码
+    require("config.php");  //出错不再继续执行下面的代码
+
+
+八、数组
+1、数组的定义
+$arr=array(1,2,3);
+
+2、数组赋值
+$arr[0]=2;
+
+3、数组遍历
+    foreach($arr as $key=>$val){
+        echo "$val";
+    }
+
+4、超全局数组
+$_SERVER
+$_GET
+$_POST
+$_REQUEST
+$_FILES
+$_COOKIE
+$_SESSION
+$GLOBALS
+
+5、多为数组定义及遍历
+    $arr=array(1,2,array(3,4));
+
+    $arr[2][1]
+
+    foreach($arr as $val){
+        if(!is_array($val)){  //如果不是数组就输出
+            echo $val."<br>";
+        }else{
+            foreach($val as $val2){  //如果是数组就再次循环
+                echo $val2."<br>";
+            }
+        }
+    }
+
+九、数组函数
+
+数组的键值操作函数：
+1、array_keys($arr)  //array,返回所有键名
+2、array_values($arr)  //array,返回所有值
+3、in_array($val,$arr)  //bool,数组中是否存在该值
+4、array_key_exists($key,$arr)  //bool,查询指定的键值是否存在
+5、array_flip($arr)  //array,反转数组，将key和val位置对调
+6、array_reverse($arr)  //array，倒序输出数组
+
+统计数组里元素个数和唯一性：
+1、count($arr);  //int
+2、array_count_values($arr);  //array,返回数组中值出现的次数
+3、array_unique($arr);  //移除数组中重复的值
+
+数组排序：
+1、sort($arr);  //按val升序，不保留key
+2、rsort($arr);  //按val降序，不保留key
+3、asort($arr);  //按val升序，保留key
+4、arsort($arr);  //按val降序，保留key
+5、kort($arr);  //按key升序，保留key
+6、krsort($arr);  //按key降序，保留key
+7、natsort($arr);  //按自然数排序，保留key。主要针对val为字符串的情况，如图片img1.jpg。
+8、netcasesort($arr)  //忽略大小写自然数排序。
+9、array_multisort($arr)  //返回bool，同时修改元数组
+
+
+
+
+数组的拆分与合并：
+1、explode($str,$arr); 将字符串按分隔符拆分为数组
+2、implode($str,$arr); / join(); 将数组按字符串组合为字符串
+3、array_slice($arr,$offset,$lens); 截取指定位置和数量的数组元素,返回的新数组是【截取出来的值】
+4、array_splice($arr,$offset,$lens[,new]); 将原来的数组裁剪，返回的是元数组裁剪后的值，并可以用新值替换裁剪位置的值。用作替换的可以是新数组或值。
+5、array_combine(); 合并数组，产生新数组。参数一作为下标，参数二作为值。
+6、array_merge(); 合并数组。如果值重复则保留，只是下标不一样。如果键重复，则之前的值将会被后面出现的值替换掉。
+7、array_intersect(); 取交集
+8、array_diff(); 取差集
+9、array_pop(); 弹出最后一个值并返回
+10、array_push(); 在最后压入一个值
+11、array_shift(); 弹出第一个值
+12、 array_unshift();在开头压入一个值
+
+其他有用的数组函数：
+1、array_rand($arr);
+2、range($str1,$str2);
+3、shuffle($arr);
+4、array_sum($arr);
+
+
+
+字符串输出：
+1、echo "string1","string2","string3"; 一次性可以连多个字符串
+2、print "string"; 只能连一个
+3、printf("My name is %s","DLM"); 格式化输出，类似于c语言
+4、$str=sprintf("My name is %s","DLM"); 格式化字符串后返回值
+
+常用的字符串格式化函数：
+去除空格：
+1、trim($str); 去字符串首尾空格
+2、ltrin($str); 去字符串左边空格
+3、rtrin($str); 去字符串右边空格
+4、str_repeat($str,$num); 将参数1重复参数2次
+
+大小写转换：
+1、strtoupper(); 全部转大写
+2、strtolower(); 全部转小写
+3、ucfirst(); 首字母大写
+4、ucwords(); 每个字母首字母大写
+
+其他常用：
+1、strlen($str); 获取字符串长度
+2、strrev($str); 字符串反转
+3、md5($str); md5加密
+4、number_format($num); 带,分隔的数字,3位一个,号
+5、strshuffle($str); 随机输出字符串
+
+与html有关的字符串函数：
+1、nl2br($str); 把\n转成<br />标签
+2、htmlspecialchars(); 将html特殊字符转成实体,<>"&，比如编辑框过滤html标签
+3、addslashes($str); 在'"\前面加上\，转义特殊字符，默认php开启
+    stripslashes($str); 删除\转义字符，不过不推荐使用
+4、strip_tags(); 删除所有html标签
+    strip_tags($str,"<a>"); 除了参数2中的html标签都删除
+注：建议在数据插入数据库之前进行3道把控
+1、[b]aaa[\b] 使用ubb标签，对部分标签过滤
+2、addslashes(); 对'"\进行转义，在前面加\
+3、htmlspecialchars();  把'"<>&转成实体，防止对数据库造成破坏
+
+字符串比较函数：
+1、strcmp($str1,$str2);
+2、strcasecmp($str1,$str2); 忽略大小写
+
+按自然数比较字符串：
+1、strnatcmp(); 
+2、strnatcasecmp(); 忽略大小写，适用于比较图片文件名
+
+字符串截取：
+1、substr($str,$offset,$lens); 严格按照lens的字节数算
+2、mb_substr($str,$offset,$lens,$encoding); 多字节截取。截取指定编码的字符串，推荐使用，适用于中文标题截取。
+
+查找字符串的位置：
+1、strpos($str,$index); 查找$str里的$index字符的位置，返回int
+2、strrpos($str,$index); 倒找文本位置
+
+字符串替换：
+str_replace(); 
+
+字符串拆分：
+1、parse_url($url); 把url拆分成数组，其中query键对应url中的参数：id=10&name=user1&age=20
+2、parse_str($str); 把query对应的参数直接拆分为数组。 
+
+
+
+正则表达式：
+1、原子
+2、元子符
+3、模式修正符
+
+正则表达式函数：
+1、preg_match();
+2、preg_match_all();
+3、preg_grep();
+4、preg_replace();
+5、preg_split();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
